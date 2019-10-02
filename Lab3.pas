@@ -116,33 +116,33 @@ procedure TimeDiff();
     writeln('Difference is ', TTime.Hour, ' hours, ', TTime.Min, ' minutes, ', TTime.Sec, ' seconds.');
   end;
 
-procedure TDate.DateAdd(h1,m1,s1, h2,m2,s2: Integer; var Answer:String[250]);
-  begin
+// procedure TDate.DateAdd(h1,m1,s1, h2,m2,s2: Integer; var Answer:String[250]);
+//   begin
     
-    Answer := inttostr(abs(h1+h2))+ ' hour, ' + inttostr(abs(m1+m2))+ ' min, ' + inttostr(abs(s1+s2))+ ' sec.';
-  end;
+//     Answer := inttostr(abs(h1+h2))+ ' hour, ' + inttostr(abs(m1+m2))+ ' min, ' + inttostr(abs(s1+s2))+ ' sec.';
+//   end;
 
-procedure TDate.DateDiffDays(day1,h1,m1,s1, day2,h2,m2,s2: Integer; var Answer:String[250]);
-  var
-    y,z: integer;
-  begin
-    y := abs(day1 - day2);
-    y := y * 24;
-    z := y + abs(h1-h2);
-    if z < 24 then
-      begin
-      Answer :=
-      inttostr(z)+ ' hour, ' + inttostr(abs(m1-m2))+ ' min, ' + inttostr(abs(s1-s2))+ ' sec.';
-      end
-    else
-      begin
-        Answer :=
-        inttostr(z div 24) + ' days, ' + inttostr(z mod 24)+ ' hour, ' + inttostr(abs(m1-m2))+ ' min, ' + inttostr(abs(s1-s2))+ ' sec.';
-      end;
+// procedure TDate.DateDiffDays(day1,h1,m1,s1, day2,h2,m2,s2: Integer; var Answer:String[250]);
+//   var
+//     y,z: integer;
+//   begin
+//     y := abs(day1 - day2);
+//     y := y * 24;
+//     z := y + abs(h1-h2);
+//     if z < 24 then
+//       begin
+//       Answer :=
+//       inttostr(z)+ ' hour, ' + inttostr(abs(m1-m2))+ ' min, ' + inttostr(abs(s1-s2))+ ' sec.';
+//       end
+//     else
+//       begin
+//         Answer :=
+//         inttostr(z div 24) + ' days, ' + inttostr(z mod 24)+ ' hour, ' + inttostr(abs(m1-m2))+ ' min, ' + inttostr(abs(s1-s2))+ ' sec.';
+//       end;
 
-  end;
+//   end;
 
-}
+
 var
   t1, t2: TTime;
 
