@@ -1,236 +1,185 @@
-﻿gram Lab3;
+﻿Program Lab3;
 
 uses crt;
 
 type
-  TTime = class(TObject)
+  TTime = class
     private
       Hour, Min, Sec: Integer;
+
+      procedure inputAll();
+
     public
       // Инициализация переменных
       constructor Create();
 
-      //Ввод времени
-      procedure inputAll();
-
-      // Разница в секундах между двумя показателями времени в одни сутки
+      // Разница в секундах между двумя показателями времени в одни сутки в секундах
       procedure DiffSec();
 
       //Разница во времени между двумя показателями времени в одни сутки
       procedure TimeDiff();
 
-      procedure Print(); //Вывод текущего заданного времени
-
-      //procedure ToString(); //Текущее время в строку
+      procedure Print(var insec: Integer); //Вывод текущего заданного времени
 
       //Сумма двух временных показателей
-      //procedure Add(Seconds: Integer);
+      procedure Add();
 
-      //procedure Add(ATime: TTime);
+      
     end;
 
-constructor Create(); //Инициализируем временные показатели
+constructor TTime.Create(); //Инициализируем временные показатели
+var
+  t1:TTime;
   begin
-    if (Hour or Min or Sec < 0) then 
+    if (t1.Hour or t1.Min or t1.Sec < 0) then 
       begin
         writeln('Error: "Incorrect datas"')
       end
     else 
       begin
-        TTime.Hour := 0;
-        TTime.Min := 0;
-        TTime.Sec := 0;
+        t1.Hour := 0;
+        t1.Min := 0;
+        t1.Sec := 0;
       end;
     
   end;
 
 procedure TTime.inputAll(); //Задаваемые значения пользователем
+var
+ t1:TTime;
   begin
     write('Input hour: ');
-      readln(TTime.Hour);
+      readln(t1.Hour);
 
     write('Input min: ');
-      readln(TTime.Min);
+      readln(t1.Min);
 
     write('Input sec: ');
-      readln(TTime.Sec);
+      readln(t1.Sec);
   end;
  
-procedure TDate.Print(var insec: Integer);
+procedure TTime.Print(var insec: Integer);
   var
+    t1:TTime;
     inmin,inhours: Real;
   begin
 
     inputAll();
 
-    while TTime.Sec > 60 do
+    while t1.Sec > 60 do
       begin
-        TTime.Min := TTime.Min + TTime.Sec div 60;
-        TTime.Sec := TTime.Sec - (TTime.sec div 60)*60;
+        t1.Min := t1.Min + t1.Sec div 60;
+        t1.Sec := t1.Sec - (t1.sec div 60)*60;
       end;
 
-    while TTime.Min > 60 do
+    while t1.Min > 60 do
       begin
-        TTime.Hour := TTime.Hour + TTime.Min div 60;
-        TTime.Min := TTime.Min - (TTime.Min div 60)*60;
+        t1.Hour := t1.Hour + t1.Min div 60;
+        t1.Min := t1.Min - (t1.Min div 60)*60;
       end;
 
-   insec := TTime.Hour*3600+TTime.Min*60+TTime.Sec;
-   inmin := TTime.Hour*60+TTime.Min+TTime.Sec/60;
-   inhours := TTime.Hour+TTime.Min/60+TTime.Sec/3600;
+   insec := t1.Hour*3600 + t1.Min*60 + t1.Sec;
+   inmin := t1.Hour*60 + t1.Min + t1.Sec/60;
+   inhours := t1.Hour + t1.Min/60 + t1.Sec/3600;
 
-   Wtiteln(inttostr(TTime.Hour) , ' hour, ' , inttostr(TTime.Min) , ' min, ' ,
-    inttostr(TTime.Sec) , ' sec. (' , floattostr(insec) , 
-    ') sec, (' , floattostr(inmin) , ') min, (' , floattostr(inhours) , ') hours.');
+   Writeln(t1.Hour , ' hour, ' ,t1.Min , ' min, ' ,
+    t1.Sec , ' sec. (' , insec , 
+    ') sec, (' , inmin , ') min, (' , inhours , ') hours.');
 
   end;
 
-procedure DiffSec(var s1,s2: Integer);
+procedure TTime.DiffSec();
+  var
+    s1,s2:Integer;
+    t1: TTime;
   begin
     writeln('First indicators: ');
-    TDate.Print(s1);
+    t1.Print(s1);
 
     writeln('Second indicators: ');
-    TDate.Print(s2);
+    t1.Print(s2);
 
     writeln('Difference is ', abs(s1-s2), 'seconds.')
   end;
 
 
-procedure TimeDiff();
+procedure TTime.TimeDiff();
+  var
+    t1: TTime;
+    s1,s2: Integer;
   begin
-    Diff(s1,s2);
+    t1.TimeDiff();
 
-    TTime.Sec := abs(s1-s2);
-    while TTime.Sec > 60 do
+    t1.Sec := abs(s1-s2);
+    while t1.Sec > 60 do
       begin
-        TTime.Min := TTime.Min + TTime.Sec div 60;
-        TTime.Sec := TTime.Sec - (TTime.sec div 60)*60;
+        t1.Min := t1.Min + t1.Sec div 60;
+        t1.Sec := t1.Sec - (t1.sec div 60)*60;
       end;
 
-    while TTime.Min > 60 do
+    while t1.Min > 60 do
       begin
-        TTime.Hour := TTime.Hour + TTime.Min div 60;
-        TTime.Min := TTime.Min - (TTime.Min div 60)*60;
+        t1.Hour := t1.Hour + t1.Min div 60;
+        t1.Min := t1.Min - (t1.Min div 60)*60;
        end;
-    writeln('Difference is ', TTime.Hour, ' hours, ', TTime.Min, ' minutes, ', TTime.Sec, ' seconds.');
+    writeln('Difference is ', t1.Hour, ' hours, ', t1.Min, ' minutes, ', t1.Sec, ' seconds.');
   end;
 
-// procedure TDate.DateAdd(h1,m1,s1, h2,m2,s2: Integer; var Answer:String[250]);
-//   begin
-    
-//     Answer := inttostr(abs(h1+h2))+ ' hour, ' + inttostr(abs(m1+m2))+ ' min, ' + inttostr(abs(s1+s2))+ ' sec.';
-//   end;
+procedure TTime.Add();
+  var
+    t1: TTime;
+    s1,s2: Integer;
+  begin
+    writeln('First indicators: ');
+    t1.Print(s1);
 
-// procedure TDate.DateDiffDays(day1,h1,m1,s1, day2,h2,m2,s2: Integer; var Answer:String[250]);
-//   var
-//     y,z: integer;
-//   begin
-//     y := abs(day1 - day2);
-//     y := y * 24;
-//     z := y + abs(h1-h2);
-//     if z < 24 then
-//       begin
-//       Answer :=
-//       inttostr(z)+ ' hour, ' + inttostr(abs(m1-m2))+ ' min, ' + inttostr(abs(s1-s2))+ ' sec.';
-//       end
-//     else
-//       begin
-//         Answer :=
-//         inttostr(z div 24) + ' days, ' + inttostr(z mod 24)+ ' hour, ' + inttostr(abs(m1-m2))+ ' min, ' + inttostr(abs(s1-s2))+ ' sec.';
-//       end;
+    writeln('Second indicators: ');
+    t1.Print(s2);
 
-//   end;
+    t1.Sec := s1 + s2;
+
+    while t1.Sec > 60 do
+      begin
+        t1.Min := t1.Min + t1.Sec div 60;
+        t1.Sec := t1.Sec - (t1.sec div 60)*60;
+      end;
+
+    while t1.Min > 60 do
+      begin
+        t1.Hour := t1.Hour + t1.Min div 60;
+        t1.Min := t1.Min - (t1.Min div 60)*60;
+       end;
+    writeln('Summ is ', t1.Hour, ' hours, ', t1.Min, ' minutes, ', t1.Sec, ' seconds.');
+  end;
+
 
 
 var
-  t1, t2: TTime;
-
+  t1: TTime;
+  n,secs: Integer;
 begin
   t1 := TTime.Create;
 
-  t1.inputAll();
-
-
-{
   writeln('Menu:');
-  writeln('1) Difference between dates (in one day) ');
-  writeln('2) Difference between dates (in few days)');
+  writeln('1) Difference between dates');
+  writeln('2) Difference between dates (in seconds)');
   writeln('3) Sum of dates');
   writeln('4) Print full date');
   readln(n);
   case n of
     1:  begin
-          write('Write 1st date hours: ');
-          readln(h1);
-          write('Write 1st date minutes: ');
-          readln(m1);
-          write('Write 1st date seconds: ');
-          readln(s1);
-          write('Write 2nd date hours: ');
-          readln(h2);
-          write('Write 2nd date minutes: ');
-          readln(m2);
-          write('Write 2nd date seconds: ');
-          readln(s2);
-            clrscr;
-          Date1.DateDiff(h1,m1,s1, h2,m2,s2, Answer);
-          writeln('Difference is ', Answer);
-          // ↑ Ошибка времени выполнения: Ссылка на объект не указывает на экземпляр объекта.
+          t1.TimeDiff();
         end;
     2:  begin
-          write('Write 1st date day: ');
-          readln(d1);
-          write('Write 1st date hours: ');
-          readln(h1);
-          write('Write 1st date minutes: ');
-          readln(m1);
-          write('Write 1st date seconds: ');
-          readln(s1);
-          write('Write 2nd date day: ');
-          readln(d2);
-          write('Write 2nd date hours: ');
-          readln(h2);
-          write('Write 2nd date minutes: ');
-          readln(m2);
-          write('Write 2nd date seconds: ');
-          readln(s2);
-            clrscr;
-          Date1.DateDiffDays(d1,h1,m1,s1, d2,h2,m2,s2, Answer);
-          writeln('Difference is ', Answer);
-          // ↑ Ошибка времени выполнения: Ссылка на объект не указывает на экземпляр объекта.
+          t1.DiffSec();
         end;
     3:  begin
-          write('Write 1st date hours: ');
-          readln(h1);
-          write('Write 1st date minutes: ');
-          readln(m1);
-          write('Write 1st date seconds: ');
-          readln(s1);
-          write('Write 2nd date hours: ');
-          readln(h2);
-          write('Write 2nd date minutes: ');
-          readln(m2);
-          write('Write 2nd date seconds: ');
-          readln(s2);
-            clrscr;
-          Date1.DateAdd(h1,m1,s1, h2,m2,s2, Answer);
-          writeln('Summ of dates is ', Answer);
-          // ↑ Ошибка времени выполнения: Ссылка на объект не указывает на экземпляр объекта.
+          t1.Add();
         end;
     4:  begin
-          write('Write 1st date hours: ');
-          readln(h1);
-          write('Write 1st date minutes: ');
-          readln(m1);
-          write('Write 1st date seconds: ');
-          readln(s1);
-            clrscr;
-          Date1.Print(h1,m1,s1, Answer);
-          writeln('Difference is ', Answer);
-          // ↑ Ошибка времени выполнения: Ссылка на объект не указывает на экземпляр объекта.
+          t1.Print(secs);
         end;
   end;
-}
+
 
 end.
