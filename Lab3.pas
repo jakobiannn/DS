@@ -10,9 +10,6 @@ type
       constructor Create();
       constructor Create(s: integer);
       constructor Create(H, M, S: byte);
-      //constructor Create(T: TTime);
-      //constructor Create(S: string);  //hh:mm:ss  
-      procedure inputAll(var t: TTime); //ввод
       // Разница в секундах между двумя показателями времени в одни сутки в секундах
       function DiffSec(const T: TTime): integer;
 
@@ -67,7 +64,7 @@ begin
   Normalize;
 end;
 
-constructor TTime.Create(H, M, S: byte); //Инициализируем временные показатели
+constructor TTime.Create(H, M, S: Integer); //Инициализируем временные показатели
 begin
   Hour := H;
   Min := M;
@@ -76,7 +73,7 @@ end;
 
 procedure TTime.Print();
 begin
-   Writeln(Hour , ' hour, ' ,Min , ' min, ' , Sec , ' sec. ');
+   Write(Hour , ' hour, ' ,Min , ' min, ' , Sec , ' sec. ');
 end;
 
 function TTime.DiffSec(const T: TTime): integer;
@@ -112,26 +109,32 @@ begin
   readln(n);
   case n of
     1:  begin
-          t1.inputAll();
-          t2.inputAll();
+          inputAll(t1);
+          inputAll(t2);
+          t1.Create(t1.Hour, t1.Min, t1.Sec);
+          t2.Create(t2.Hour, t2.Min, t2.Sec);
           t1 := t1.TimeDiff(t2);
-          writeln('Difference is ', t1.Print);
+          write('Difference is ', t1.Print);
         end;
     2:  begin
-          t1.inputAll();
-          t2.inputAll();
+          inputAll(t1);
+          inputAll(t2);
           t1.DiffSec(t2);
-          writeln('Difference in seconds is ', t1.Print);
+          write('Difference in seconds is ', t1.Print);
         end;
     3:  begin
-          t1.inputAll();
-          t2.inputAll();
+          inputAll(t1);
+          inputAll(t2);
+
+          t1.Create(t1.Hour, t1.Min, t1.Sec);
+          t2.Create(t2.Hour, t2.Min, t2.Sec);
+
           t1.Add(t2);
-          writeln('Sum is ', t1.Print);
+          write('Sum is ', t1.Print);
         end;
     4:  begin
-          t1.inputAll();
-          t1.Normalize();
+          inputAll(t1);
+          t1.Create(t1.Hour, t1.Min, t1.Sec);
           t1.Print();
         end;
   end;
