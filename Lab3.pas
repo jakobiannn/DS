@@ -1,7 +1,5 @@
 Program lab3;
 
-uses crt;
-
 type
   TTime = class
     private
