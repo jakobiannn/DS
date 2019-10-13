@@ -1,183 +1,140 @@
-﻿Program Lab3;
+Program lab3;
 
 uses crt;
 
 type
   TTime = class
     private
-      Hour, Min, Sec: Integer;
-
-      procedure inputAll();
+      Hour, Min, Sec: byte;    
 
     public
       // Инициализация переменных
       constructor Create();
-
+      constructor Create(s: integer);
+      constructor Create(H, M, S: byte);
+      //constructor Create(T: TTime);
+      //constructor Create(S: string);  //hh:mm:ss  
+      procedure inputAll(var t: TTime); //ввод
       // Разница в секундах между двумя показателями времени в одни сутки в секундах
-      procedure DiffSec();
+      function DiffSec(const T: TTime): integer;
 
       //Разница во времени между двумя показателями времени в одни сутки
-      procedure TimeDiff();
+      procedure TimeDiff(const T: TTime);
 
-      procedure Print(var insec: Integer); //Вывод текущего заданного времени
+      procedure Print(); //Вывод текущего заданного времени
 
       //Сумма двух временных показателей
-      procedure Add();
-
+      procedure Add(const T: TTime);
       
+      //Сумма двух временных показателей
+      procedure Normalize();
     end;
 
-constructor TTime.Create(); //Инициализируем временные показатели
-var
-  t1:TTime;
-  begin
-    if (t1.Hour or t1.Min or t1.Sec < 0) then 
-      begin
-        writeln('Error: "Incorrect datas"')
-      end
-    else 
-      begin
-        t1.Hour := 0;
-        t1.Min := 0;
-        t1.Sec := 0;
-      end;
-    
-  end;
-
-procedure TTime.inputAll(); //Задаваемые значения пользователем
-var
- t1:TTime;
+procedure inputAll(var t: TTime);    
   begin
     write('Input hour: ');
-      readln(t1.Hour);
+    readln(t.Hour);
 
     write('Input min: ');
-      readln(t1.Min);
+    readln(t.Min);
 
     write('Input sec: ');
-      readln(t1.Sec);
-  end;
- 
-procedure TTime.Print(var insec: Integer);
-  var
-    t1:TTime;
-    inmin,inhours: Real;
-  begin
+    readln(t.Sec);
+  end;  
 
-    inputAll();
+constructor TTime.Create(); //Инициализируем временные показатели
+begin
+  Hour := 0;
+  Min := 0;
+  Sec := 0;
+end;
 
-    while t1.Sec > 60 do
-      begin
-        t1.Min := t1.Min + t1.Sec div 60;
-        t1.Sec := t1.Sec - (t1.sec div 60)*60;
-      end;
+procedure TTime.Normalize();
+begin
+  Min := Min + Sec div 60;
 
-    while t1.Min > 60 do
-      begin
-        t1.Hour := t1.Hour + t1.Min div 60;
-        t1.Min := t1.Min - (t1.Min div 60)*60;
-      end;
+  Sec := Sec Mod 60;
 
-   insec := t1.Hour*3600 + t1.Min*60 + t1.Sec;
-   inmin := t1.Hour*60 + t1.Min + t1.Sec/60;
-   inhours := t1.Hour + t1.Min/60 + t1.Sec/3600;
+  Hour := Hour + Min div 60;
 
-   Writeln(t1.Hour , ' hour, ' ,t1.Min , ' min, ' ,
-    t1.Sec , ' sec. (' , insec , 
-    ') sec, (' , inmin , ') min, (' , inhours , ') hours.');
+  Min := Min mod 60;
+end;
 
-  end;
+constructor TTime.Create(s: integer);
+begin
+  Hour := 0;
+  Min := 0;
+  Sec := s;  
 
-procedure TTime.DiffSec();
-  var
-    s1,s2:Integer;
-    t1: TTime;
-  begin
-    writeln('First indicators: ');
-    t1.Print(s1);
+  Normalize;
+end;
 
-    writeln('Second indicators: ');
-    t1.Print(s2);
+constructor TTime.Create(H, M, S: byte); //Инициализируем временные показатели
+begin
+  Hour := H;
+  Min := M;
+  Sec := S;
+end;
 
-    writeln('Difference is ', abs(s1-s2), 'seconds.')
-  end;
+procedure TTime.Print();
+begin
+   Writeln(Hour , ' hour, ' ,Min , ' min, ' , Sec , ' sec. ');
+end;
+
+function TTime.DiffSec(const T: TTime): integer;
+begin
+  Result := abs((-Hour+T.Hour)*60*60 + (-Min+T.Min)*60 + (-Sec+T.Sec));
+end;
 
 
-procedure TTime.TimeDiff();
-  var
-    t1: TTime;
-    s1,s2: Integer;
-  begin
-    t1.TimeDiff();
+function TTime.TimeDiff(const T: TTime): TTime;
+begin
+  Result := TTime.Create(DiffSec(T));
+end;
 
-    t1.Sec := abs(s1-s2);
-    while t1.Sec > 60 do
-      begin
-        t1.Min := t1.Min + t1.Sec div 60;
-        t1.Sec := t1.Sec - (t1.sec div 60)*60;
-      end;
-
-    while t1.Min > 60 do
-      begin
-        t1.Hour := t1.Hour + t1.Min div 60;
-        t1.Min := t1.Min - (t1.Min div 60)*60;
-       end;
-    writeln('Difference is ', t1.Hour, ' hours, ', t1.Min, ' minutes, ', t1.Sec, ' seconds.');
-  end;
-
-procedure TTime.Add();
-  var
-    t1: TTime;
-    s1,s2: Integer;
-  begin
-    writeln('First indicators: ');
-    t1.Print(s1);
-
-    writeln('Second indicators: ');
-    t1.Print(s2);
-
-    t1.Sec := s1 + s2;
-
-    while t1.Sec > 60 do
-      begin
-        t1.Min := t1.Min + t1.Sec div 60;
-        t1.Sec := t1.Sec - (t1.sec div 60)*60;
-      end;
-
-    while t1.Min > 60 do
-      begin
-        t1.Hour := t1.Hour + t1.Min div 60;
-        t1.Min := t1.Min - (t1.Min div 60)*60;
-       end;
-    writeln('Summ is ', t1.Hour, ' hours, ', t1.Min, ' minutes, ', t1.Sec, ' seconds.');
-  end;
-
+procedure TTime.Add(const T: TTime);
+begin
+  Hour := Hour + T.Hour;
+  Min := Min + T.Min;
+  Sec := Sec + T.Sec;
+end;
 
 
 var
-  t1: TTime;
   n,secs: Integer;
+  t1,t2,t3: TTime;
 begin
   t1 := TTime.Create;
-
+  t2 := TTime.Create;
   writeln('Menu:');
-  writeln('1) Difference between dates');
-  writeln('2) Difference between dates (in seconds)');
+  writeln('1) Difference between times');
+  writeln('2) Difference between times (in seconds)');
   writeln('3) Sum of dates');
   writeln('4) Print full date');
   readln(n);
   case n of
     1:  begin
-          t1.TimeDiff();
+          t1.inputAll();
+          t2.inputAll();
+          t1 := t1.TimeDiff(t2);
+          writeln('Difference is ', t1.Print);
         end;
     2:  begin
-          t1.DiffSec();
+          t1.inputAll();
+          t2.inputAll();
+          t1.DiffSec(t2);
+          writeln('Difference in seconds is ', t1.Print);
         end;
     3:  begin
-          t1.Add();
+          t1.inputAll();
+          t2.inputAll();
+          t1.Add(t2);
+          writeln('Sum is ', t1.Print);
         end;
     4:  begin
-          t1.Print(secs);
+          t1.inputAll();
+          t1.Normalize();
+          t1.Print();
         end;
   end;
 
